@@ -11,7 +11,6 @@
       --bg1: #fffafc;
       --bg2: #f4f6ff;
       --pink: #ff6b9d;
-      --pink-2: #ff7ca8;
       --purple: #7c5cff;
       --purple-deep: #5543d1;
       --indigo: #3645c5;
@@ -22,6 +21,8 @@
       --shadow: 0 20px 50px rgba(97, 80, 170, 0.12);
       --warning: #fff0c7;
       --warning-border: rgba(255, 185, 62, 0.15);
+      --success: #28c76f;
+      --gold: #f6b93b;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -132,7 +133,7 @@
       font-weight: 700;
     }
 
-    .start-btn, .secondary-btn, .unlock-btn, .nav-btn {
+    .start-btn, .secondary-btn, .unlock-btn, .nav-btn, .pay-btn {
       border: none;
       cursor: pointer;
       width: 100%;
@@ -150,7 +151,7 @@
       box-shadow: 0 18px 30px rgba(124, 92, 255, 0.2);
     }
 
-    .secondary-btn {
+    .secondary-btn, .pay-btn {
       background: linear-gradient(135deg, #ff9bb0 0%, #8a6dff 100%);
       box-shadow: 0 16px 28px rgba(124, 92, 255, 0.16);
     }
@@ -178,7 +179,7 @@
       transform: none;
     }
 
-    .start-btn:hover, .secondary-btn:hover, .unlock-btn:hover, .nav-btn:hover:not(:disabled) {
+    .start-btn:hover, .secondary-btn:hover, .unlock-btn:hover, .nav-btn:hover:not(:disabled), .pay-btn:hover {
       transform: translateY(-2px);
     }
 
@@ -370,6 +371,143 @@
       font-size: 16px;
     }
 
+    .premium-lock {
+      margin-top: 18px;
+      padding: 18px;
+      background: rgba(255,255,255,0.38);
+      border: 1px solid rgba(120, 98, 202, 0.1);
+      border-radius: 18px;
+      filter: blur(1.5px);
+      opacity: 0.78;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .premium-lock::after {
+      content: "付费解锁";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-12deg);
+      background: rgba(124, 92, 255, 0.12);
+      color: var(--purple-deep);
+      font-weight: 900;
+      padding: 8px 16px;
+      border-radius: 999px;
+      letter-spacing: 2px;
+      backdrop-filter: blur(2px);
+    }
+
+    .premium-locked {
+      display: block;
+    }
+
+    .premium-unlocked {
+      display: none;
+    }
+
+    .premium-unlocked.show {
+      display: block;
+    }
+
+    .pay-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 24, 39, 0.54);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      padding: 20px;
+    }
+
+    .pay-modal.show {
+      display: flex;
+    }
+
+    .pay-panel {
+      width: min(420px, 92vw);
+      background: white;
+      border-radius: 28px;
+      padding: 22px 20px 18px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.18);
+      text-align: center;
+    }
+
+    .pay-panel h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      letter-spacing: -0.03em;
+    }
+
+    .pay-panel p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    .pay-amount {
+      display: inline-block;
+      background: linear-gradient(135deg, #fff2d6 0%, #ffe6a8 100%);
+      border: 1px solid rgba(246, 185, 59, 0.18);
+      color: #a36b00;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .qr-box {
+      width: 220px;
+      height: 220px;
+      margin: 0 auto 14px;
+      border-radius: 20px;
+      padding: 10px;
+      background: linear-gradient(135deg, #ffffff 0%, #f6f6ff 100%);
+      border: 1px solid rgba(124,92,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qr-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+
+    .pay-hint {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height: 1.7;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .modal-actions .secondary-btn,
+    .modal-actions .pay-btn {
+      width: 50%;
+      height: 52px;
+      font-size: 15px;
+    }
+
+    .success-badge {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(40, 199, 111, 0.12);
+      color: var(--success);
+      font-weight: 800;
+      font-size: 13px;
+    }
+
     .hidden { display: none; }
 
     @media (max-width: 768px) {
@@ -378,6 +516,8 @@
       .option { padding: 16px 14px; }
       .result-actions { flex-direction: column; }
       .result-actions .secondary-btn, .result-actions .unlock-btn { width: 100%; }
+      .modal-actions { flex-direction: column; }
+      .modal-actions .secondary-btn, .modal-actions .pay-btn { width: 100%; }
     }
   </style>
 </head>
@@ -436,11 +576,54 @@
             <li>恋爱风险预警</li>
             <li>未来成长路线图</li>
           </ul>
+
+          <div class="premium-lock premium-locked" id="premiumLockedBox">
+            <div class="section">
+              <h3>高级分析（付费版）</h3>
+              <ul>
+                <li>依恋风格的深层触发点</li>
+                <li>你最容易陷入的关系模式</li>
+                <li>你真正需要的伴侣画像</li>
+                <li>未来爱情中的风险与成长建议</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="premium-unlocked" id="premiumUnlockedBox">
+            <div class="section">
+              <h3>完整版恋爱分析</h3>
+              <ul>
+                <li>你的依恋模式属于高度需要确认型，对关系的回应非常敏感，适合稳定且温和的伴侣。</li>
+                <li>你在择偶时最看重的是“理解、陪伴和长期安全感”，而不是只看热闹与刺激。</li>
+                <li>你真正需要的伴侣不是控制你，而是帮助你在亲密和自由之间找到平衡，给你足够的安心感。</li>
+                <li>你未来的爱情容易走向更成熟的状态：当你学会把爱建立在边界与理解之上时，关系会更稳定。</li>
+                <li>你的成长方向是：建立自我价值感、减少对确认的过度依赖，并逐步培养更清晰的界限感。</li>
+              </ul>
+              <div class="success-badge">✓ 已解锁完整版报告</div>
+            </div>
+          </div>
+
           <div class="result-actions">
             <button class="secondary-btn" id="replayBtn">重新测试</button>
-            <button class="unlock-btn" id="copyBtn">复制结果</button>
+            <button class="unlock-btn" id="openPayBtn">解锁完整报告 ¥9.9</button>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pay-modal" id="payModal" aria-modal="true" role="dialog">
+    <div class="pay-panel">
+      <h3>支付解锁完整版</h3>
+      <p>请用支付宝扫描二维码完成支付，支付成功后即可查看完整报告。</p>
+      <div class="pay-amount">¥9.9</div>
+      <div class="qr-box">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=ALIPAY%3A17645113009" alt="支付宝收款码" />
+      </div>
+      <div class="pay-hint">收款账号：17645113009<br />请在支付宝中确认收款后，点击下方“已完成支付”解锁。</div>
+      <div class="modal-actions">
+        <button class="secondary-btn" id="closePayBtn">取消</button>
+        <button class="pay-btn" id="confirmPayBtn">已完成支付</button>
       </div>
     </div>
   </div>
@@ -554,6 +737,7 @@
     const scores = { R: 0, E: 0, L: 0, A: 0, G: 0, F: 0 };
     const userAnswers = [];
     let currentIndex = 0;
+    let paid = false;
 
     const welcomePage = document.getElementById('welcomePage');
     const quizPage = document.getElementById('quizPage');
@@ -566,6 +750,9 @@
     const resultDesc = document.getElementById('resultDesc');
     const resultTags = document.getElementById('resultTags');
     const resultContent = document.getElementById('resultContent');
+    const premiumLockedBox = document.getElementById('premiumLockedBox');
+    const premiumUnlockedBox = document.getElementById('premiumUnlockedBox');
+    const payModal = document.getElementById('payModal');
 
     function resetScores() {
       Object.keys(scores).forEach((key) => scores[key] = 0);
@@ -577,6 +764,16 @@
       Object.entries(target.weight).forEach(([type, value]) => {
         scores[type] += direction * value;
       });
+    }
+
+    function refreshPremiumState() {
+      if (paid) {
+        premiumLockedBox.style.display = 'none';
+        premiumUnlockedBox.classList.add('show');
+      } else {
+        premiumLockedBox.style.display = 'block';
+        premiumUnlockedBox.classList.remove('show');
+      }
     }
 
     document.getElementById('startBtn').addEventListener('click', () => {
@@ -607,6 +804,21 @@
       } catch (err) {
         alert('复制失败，请手动复制：' + shareText);
       }
+    });
+
+    document.getElementById('openPayBtn').addEventListener('click', () => {
+      payModal.classList.add('show');
+    });
+
+    document.getElementById('closePayBtn').addEventListener('click', () => {
+      payModal.classList.remove('show');
+    });
+
+    document.getElementById('confirmPayBtn').addEventListener('click', () => {
+      paid = true;
+      refreshPremiumState();
+      payModal.classList.remove('show');
+      alert('支付已确认，完整版报告已解锁');
     });
 
     function renderQuestion() {
@@ -671,6 +883,7 @@
     function showResult() {
       quizPage.classList.add('hidden');
       resultPage.classList.remove('hidden');
+      refreshPremiumState();
 
       const topTrait = getTopTrait();
       const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
