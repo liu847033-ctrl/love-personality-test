@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>恋爱人格测试｜发现你的恋爱原型</title>
+  <meta name="description" content="30道深度测试题，发现你的恋爱人格类型" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(180deg, #fff7fb 0%, #f7f8ff 100%);
+      color: #222;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .hero {
+      padding-top: 40px;
+      text-align: center;
+    }
+    .logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff6b9d, #7c5cff);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: #fff;
+      font-weight: 800;
+      box-shadow: 0 10px 25px rgba(124, 92, 255, 0.2);
+    }
+    .hero h1 {
+      margin-top: 22px;
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+    .hero p {
+      margin-top: 16px;
+      font-size: 17px;
+      color: #666;
+      line-height: 1.8;
+    }
+    .start-btn,
+    .unlock-btn {
+      width: 100%;
+      height: 58px;
+      border: none;
+      border-radius: 16px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .start-btn {
+      margin-top: 30px;
+      background: linear-gradient(135deg, #ff5f8f, #7c5cff);
+      box-shadow: 0 12px 30px rgba(124, 92, 255, 0.22);
+    }
+    .start-btn:hover,
+    .unlock-btn:hover {
+      transform: translateY(-2px);
+    }
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      padding: 24px;
+      margin-top: 20px;
+    }
+    .progress-wrap { margin-bottom: 20px; }
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #666;
+    }
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #eee;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #ff6b9d, #7c5cff);
+      transition: width 0.3s ease;
+    }
+    .question-title {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .option {
+      background: #fff;
+      border: 2px solid #eee;
+      border-radius: 18px;
+      padding: 18px;
+      margin-top: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .option:hover {
+      border-color: #7c5cff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(124, 92, 255, 0.08);
+    }
+    .option-label {
+      color: #7c5cff;
+      font-weight: 800;
+      margin-right: 8px;
+    }
+    .option-text {
+      line-height: 1.7;
+      color: #333;
+    }
+    .result-header { text-align: center; }
+    .result-type {
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .result-sub {
+      margin-top: 10px;
+      color: #666;
+      line-height: 1.8;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .tag {
+      background: #f1f3ff;
+      color: #5a55ff;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .chart-wrap { margin-top: 30px; }
+    .section {
+      margin-top: 30px;
+    }
+    .section h3 {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+    .section ul {
+      padding-left: 18px;
+    }
+    .section li {
+      margin-bottom: 10px;
+      line-height: 1.8;
+      color: #333;
+    }
+    .premium {
+      margin-top: 40px;
+      padding: 24px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #fff6d9, #ffe4a8);
+    }
+    .premium h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+    .premium ul {
+      padding-left: 18px;
+    }
+    .premium li {
+      margin-bottom: 10px;
+      line-height: 1.7;
+    }
+    .unlock-btn {
+      margin-top: 20px;
+      background: #111;
+      box-shadow: 0 10px 25px rgba(17,17,17,0.18);
+    }
+    .hidden { display: none; }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 28px; }
+      .question-title { font-size: 21px; }
+      .result-type { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="welcomePage">
+      <div class="hero">
+        <div class="logo">❤</div>
+        <h1>发现你的恋爱人格</h1>
+        <p>通过30道深度问题，分析你的恋爱模式、依恋倾向与情感需求。</p>
+        <button class="start-btn" id="startBtn">开始测试</button>
+      </div>
+    </div>
+
+    <div id="quizPage" class="hidden">
+      <div class="card">
+        <div class="progress-wrap">
+          <div class="progress-top">
+            <span id="progressText">第1题</span>
+            <span id="progressPercent">0%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+        </div>
+        <div id="questionContainer"></div>
+      </div>
+    </div>
+
+    <div id="resultPage" class="hidden">
+      <div class="card">
+        <div class="result-header">
+          <div id="resultTitle" class="result-type"></div>
+          <div id="resultDesc" class="result-sub"></div>
+          <div id="resultTags" class="tags"></div>
+        </div>
+
+        <div class="chart-wrap">
+          <canvas id="radarChart" height="300"></canvas>
+        </div>
+
+        <div id="resultContent"></div>
+
+        <div class="premium">
+          <h2>解锁完整版恋爱分析</h2>
+          <ul>
+            <li>你的依恋模式分析</li>
+            <li>潜意识择偶偏好</li>
+            <li>最适合你的伴侣画像</li>
+            <li>恋爱风险预警</li>
+            <li>未来成长路线图</li>
+          </ul>
+          <button class="unlock-btn">解锁完整报告 ¥9.9</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const personalityTypes = {
+      R: "浪漫型",
+      E: "探险型",
+      L: "逻辑型",
+      A: "执着型",
+      G: "关怀型",
+      F: "自由型"
+    };
+
+    const personalityDescriptions = {
+      R: {
+        title: "浪漫型恋爱人格",
+        desc: "你喜欢情绪的强烈连接和浪漫的感受，重视心动感和陪伴的温度。你更容易被真诚表达、细节关怀和情绪共振打动。",
+        tags: ["情绪敏感", "浪漫表达", "深情投入"],
+        details: [
+          "你容易被热烈的表达和亲密感打动。",
+          "你重视情绪连接，对细节很敏感。",
+          "你最需要的不是简单陪伴，而是被真心对待和温暖回应。"
+        ]
+      },
+      E: {
+        title: "探险型恋爱人格",
+        desc: "你喜欢新鲜感、变化和成长，恋爱里不太喜欢停留在平淡状态。你通常会追求刺激、惊喜和新鲜感，愿意一起探索人生。",
+        tags: ["新鲜感", "尝试冒险", "动态相处"],
+        details: [
+          "你不喜欢关系过于单调和无聊。",
+          "你会更容易被有想法、有行动力的人吸引。",
+          "你适合和能一起成长、一起冒险的人在一起。"
+        ]
+      },
+      L: {
+        title: "逻辑型恋爱人格",
+        desc: "你更看重稳定性、价值匹配和长期可能性。你不是不爱，而是愿意用理性来看待感情，关注关系是否有继续发展的基础。",
+        tags: ["理性判断", "长期规划", "稳定关系"],
+        details: [
+          "你会更关注现实基础和相处适配度。",
+          "你在关系中更容易理性判断是否值得投入。",
+          "你需要的是稳定、成熟、双方长期兼容的相处方式。"
+        ]
+      },
+      A: {
+        title: "执着型恋爱人格",
+        desc: "你在感情中往往投入深度，容易对关系产生很强的期待和依赖感。你特别在意是否被认真对待，也容易因为不确定感而焦虑。",
+        tags: ["深度投入", "情感依赖", "安全敏感"],
+        details: [
+          "你对感情很认真，容易想得更深。",
+          "你会在意对方是否真的重视你。",
+          "你需要稳定的确认和持续的情绪回应。"
+        ]
+      },
+      G: {
+        title: "关怀型恋爱人格",
+        desc: "你重视共情、陪伴和理解，恋爱里更看重温暖、稳定和对方的情绪需求。你希望关系里彼此能够被照顾和被理解。",
+        tags: ["同理心", "温暖陪伴", "稳定支持"],
+        details: [
+          "你会更在意对方的感受和关系中的安全感。",
+          "你习惯照顾别人，也希望对方对你也一样温柔。",
+          "你适合成熟、温暖、有责任感的人。"
+        ]
+      },
+      F: {
+        title: "自由型恋爱人格",
+        desc: "你重视个人空间、边界感和独立性。你不追求被控制，而希望爱中有尊重、轻松和平衡。你更看重关系是否允许双方自由成长。",
+        tags: ["独立自主", "边界感", "轻松相处"],
+        details: [
+          "你重视空间和独立，不喜欢被束缚。",
+          "你更容易和懂得尊重的人相处。",
+          "你希望关系里有平衡、有舒适、有自由感。"
+        ]
+      }
+    };
+
+    const questions = [
+      { id: 1, question: "当你开始对一个人产生好感时，你通常会：", options: { A: { text: "主动寻找机会接近对方", weight: { R: 2, E: 1 } }, B: { text: "先观察一段时间再决定", weight: { L: 2 } }, C: { text: "等待对方释放明显信号", weight: { A: 2, G: 1 } } } },
+      { id: 2, question: "第一次约会结束后，你最在意的是：", options: { A: { text: "是否有继续发展的可能", weight: { L: 2, G: 1 } }, B: { text: "相处时是否舒服自然", weight: { G: 2 } }, C: { text: "是否产生了心动感觉", weight: { R: 2, E: 1 } } } },
+      { id: 3, question: "对方回复消息比较慢时：", options: { A: { text: "不太在意，对方可能在忙", weight: { F: 2 } }, B: { text: "会偶尔看看有没有回复", weight: { L: 1, G: 1 } }, C: { text: "容易反复猜测原因", weight: { A: 2 } } } },
+      { id: 4, question: "如果喜欢的人突然约你出去：", options: { A: { text: "大概率直接答应", weight: { R: 1, E: 2 } }, B: { text: "看当天安排再决定", weight: { L: 2 } }, C: { text: "会先考虑自己状态", weight: { F: 2 } } } },
+      { id: 5, question: "刚进入一段关系时，你更倾向：", options: { A: { text: "尽快建立稳定联系", weight: { G: 2 } }, B: { text: "顺其自然发展", weight: { L: 1, G: 1 } }, C: { text: "保持一定距离感", weight: { F: 2 } } } },
+      { id: 6, question: "面对表白时：", options: { A: { text: "更看重未来可能性", weight: { L: 2, G: 1 } }, B: { text: "更看重当下感觉", weight: { R: 2 } }, C: { text: "更看重现实条件", weight: { L: 2, F: 1 } } } },
+      { id: 7, question: "你觉得恋爱最重要的是：", options: { A: { text: "安全感", weight: { A: 2 } }, B: { text: "理解与陪伴", weight: { G: 2 } }, C: { text: "激情与吸引力", weight: { R: 2, E: 1 } } } },
+      { id: 8, question: "如果发现双方兴趣差异较大：", options: { A: { text: "愿意互相了解", weight: { G: 2 } }, B: { text: "看是否影响相处", weight: { L: 2 } }, C: { text: "会担心未来问题", weight: { A: 1, L: 1 } } } },
+      { id: 9, question: "在关系初期：", options: { A: { text: "喜欢频繁互动", weight: { A: 2 } }, B: { text: "保持适度联系", weight: { G: 1, L: 1 } }, C: { text: "不希望太快投入", weight: { F: 2 } } } },
+      { id: 10, question: "对于命中注定这种说法：", options: { A: { text: "比较相信", weight: { R: 2 } }, B: { text: "半信半疑", weight: { E: 1, L: 1 } }, C: { text: "更相信经营", weight: { L: 2 } } } },
+      { id: 11, question: "伴侣和异性朋友单独吃饭时：", options: { A: { text: "充分信任", weight: { F: 1, L: 1 } }, B: { text: "会关注情况", weight: { G: 1, A: 1 } }, C: { text: "容易介意", weight: { A: 2 } } } },
+      { id: 12, question: "对方忘记重要纪念日：", options: { A: { text: "理解并提醒", weight: { L: 1, G: 1 } }, B: { text: "会有些失落", weight: { R: 1, A: 1 } }, C: { text: "会很受伤", weight: { A: 2, R: 1 } } } },
+      { id: 13, question: "恋爱中最让你害怕的是：", options: { A: { text: "失去自由", weight: { F: 2 } }, B: { text: "被忽视", weight: { A: 2 } }, C: { text: "被背叛", weight: { G: 1, A: 1 } } } },
+      { id: 14, question: "伴侣情绪低落时：", options: { A: { text: "主动陪伴安慰", weight: { G: 2 } }, B: { text: "提供实际建议", weight: { L: 2 } }, C: { text: "给对方独处空间", weight: { F: 2 } } } },
+      { id: 15, question: "对方突然变得冷淡：", options: { A: { text: "主动沟通原因", weight: { G: 1, L: 1 } }, B: { text: "先观察变化", weight: { L: 2 } }, C: { text: "会忍不住胡思乱想", weight: { A: 2 } } } },
+      { id: 16, question: "当关系进入平淡期时，你通常会：", options: { A: { text: "主动创造新的约会体验", weight: { E: 2, R: 1 } }, B: { text: "接受平淡也是感情的一部分", weight: { G: 2, L: 1 } }, C: { text: "开始怀疑彼此是否还相爱", weight: { A: 2 } } } },
+      { id: 17, question: "面对异地恋时，你更可能：", options: { A: { text: "制定明确见面计划", weight: { L: 2, G: 1 } }, B: { text: "经常分享生活保持连接", weight: { A: 2, R: 1 } }, C: { text: "担心关系限制个人生活", weight: { F: 2 } } } },
+      { id: 18, question: "你理想中的约会更像：", options: { A: { text: "浪漫精致的特别安排", weight: { R: 2 } }, B: { text: "轻松自然地相处聊天", weight: { G: 2 } }, C: { text: "尝试新鲜有趣的活动", weight: { E: 2 } } } },
+      { id: 19, question: "恋爱中发生争吵时，你通常：", options: { A: { text: "希望立刻解决问题", weight: { G: 1, L: 1 } }, B: { text: "先冷静思考再沟通", weight: { L: 2 } }, C: { text: "情绪容易受到影响", weight: { A: 2 } } } },
+      { id: 20, question: "如果伴侣想查看你的手机：", options: { A: { text: "觉得没什么问题", weight: { A: 1, G: 1 } }, B: { text: "视情况而定", weight: { L: 2 } }, C: { text: "认为应尊重个人隐私", weight: { F: 2 } } } },
+      { id: 21, question: "恋爱中的你更接近：", options: { A: { text: "照顾者", weight: { G: 2 } }, B: { text: "陪伴者", weight: { A: 2 } }, C: { text: "探索者", weight: { E: 2 } } } },
+      { id: 22, question: "如果伴侣提出新的生活目标：", options: { A: { text: "积极支持并参与", weight: { G: 1, E: 1 } }, B: { text: "分析可行性再决定", weight: { L: 2 } }, C: { text: "鼓励对方自由尝试", weight: { F: 2 } } } },
+      { id: 23, question: "你更容易被哪种人吸引：", options: { A: { text: "温暖可靠的人", weight: { G: 2 } }, B: { text: "有魅力有激情的人", weight: { R: 2 } }, C: { text: "独特有想法的人", weight: { E: 2 } } } },
+      { id: 24, question: "收到伴侣准备的惊喜时：", options: { A: { text: "非常感动和开心", weight: { R: 2, A: 1 } }, B: { text: "感谢对方的用心", weight: { G: 2 } }, C: { text: "更关注惊喜背后的意义", weight: { L: 2 } } } },
+      { id: 25, question: "你对未来关系的期待是：", options: { A: { text: "稳定长久", weight: { G: 2 } }, B: { text: "持续心动", weight: { R: 2 } }, C: { text: "共同成长", weight: { E: 2 } } } },
+      { id: 26, question: "当伴侣需要帮助时：", options: { A: { text: "第一时间提供支持", weight: { G: 2 } }, B: { text: "帮忙分析解决办法", weight: { L: 2 } }, C: { text: "鼓励对方独立解决", weight: { F: 2 } } } },
+      { id: 27, question: "恋爱中的你最不能接受：", options: { A: { text: "欺骗和失信", weight: { G: 2, A: 1 } }, B: { text: "冷漠和忽视", weight: { A: 2 } }, C: { text: "束缚和控制", weight: { F: 2 } } } },
+      { id: 28, question: "对于公开秀恩爱，你更倾向：", options: { A: { text: "喜欢表达爱意", weight: { R: 2 } }, B: { text: "适度即可", weight: { G: 1, L: 1 } }, C: { text: "更喜欢低调相处", weight: { F: 2 } } } },
+      { id: 29, question: "如果关系出现长期问题：", options: { A: { text: "努力修复和坚持", weight: { G: 2 } }, B: { text: "客观分析是否继续", weight: { L: 2 } }, C: { text: "考虑是否有新的可能性", weight: { E: 2, F: 1 } } } },
+      { id: 30, question: "你认为爱情最终应该带来：", options: { A: { text: "安全感与归属感", weight: { A: 2, G: 1 } }, B: { text: "幸福与陪伴", weight: { G: 2, R: 1 } }, C: { text: "成长与更广阔的人生体验", weight: { E: 2, F: 1 } } } }
+    ];
+
+    const scores = { R: 0, E: 0, L: 0, A: 0, G: 0, F: 0 };
+    let currentIndex = 0;
+
+    const welcomePage = document.getElementById('welcomePage');
+    const quizPage = document.getElementById('quizPage');
+    const resultPage = document.getElementById('resultPage');
+    const questionContainer = document.getElementById('questionContainer');
+    const progressText = document.getElementById('progressText');
+    const progressPercent = document.getElementById('progressPercent');
+    const progressBar = document.getElementById('progressBar');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultDesc = document.getElementById('resultDesc');
+    const resultTags = document.getElementById('resultTags');
+    const resultContent = document.getElementById('resultContent');
+
+    document.getElementById('startBtn').addEventListener('click', () => {
+      welcomePage.classList.add('hidden');
+      quizPage.classList.remove('hidden');
+      renderQuestion();
+    });
+
+    function renderQuestion() {
+      const q = questions[currentIndex];
+      const percent = Math.round(((currentIndex + 1) / questions.length) * 100);
+      progressText.textContent = `第${currentIndex + 1}题`;
+      progressPercent.textContent = `${percent}%`;
+      progressBar.style.width = `${percent}%`;
+
+      questionContainer.innerHTML = `
+        <div class="question-title">${q.question}</div>
+        ${Object.keys(q.options).map((key) => `
+          <div class="option" data-key="${key}">
+            <span class="option-label">${key}.</span>
+            <span class="option-text">${q.options[key].text}</span>
+          </div>
+        `).join('')}
+      `;
+
+      questionContainer.querySelectorAll('.option').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const selectedKey = btn.dataset.key;
+          const selected = q.options[selectedKey];
+          Object.entries(selected.weight).forEach(([type, value]) => {
+            scores[type] += value;
+          });
+
+          currentIndex++;
+
+          if (currentIndex < questions.length) {
+            renderQuestion();
+          } else {
+            showResult();
+          }
+        });
+      });
+    }
+
+    function getTopTrait() {
+      return Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+    }
+
+    function showResult() {
+      quizPage.classList.add('hidden');
+      resultPage.classList.remove('hidden');
+
+      const topTrait = getTopTrait();
+      const result = personalityDescriptions[topTrait];
+      const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+      const secondTrait = sorted[1][0];
+
+      resultTitle.textContent = result.title;
+      resultDesc.textContent = result.desc;
+      resultTags.innerHTML = result.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+
+      const radarData = {
+        labels: ['浪漫型', '探险型', '逻辑型', '执着型', '关怀型', '自由型'],
+        datasets: [{
+          label: '恋爱人格指数',
+          data: [scores.R, scores.E, scores.L, scores.A, scores.G, scores.F],
+          backgroundColor: 'rgba(124, 92, 255, 0.25)',
+          borderColor: '#7c5cff',
+          borderWidth: 2,
+          pointBackgroundColor: '#ff6b9d'
+        }]
+      };
+
+      const radarConfig = {
+        type: 'radar',
+        data: radarData,
+        options: {
+          responsive: true,
+          scales: {
+            r: {
+              beginAtZero: true,
+              max: Math.max(...Object.values(scores)) + 3,
+              ticks: { stepSize: 2 }
+            }
+          },
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      };
+
+      if (window.myRadarChart) {
+        window.myRadarChart.destroy();
+      }
+
+      const ctx = document.getElementById('radarChart').getContext('2d');
+      window.myRadarChart = new Chart(ctx, radarConfig);
+
+      resultContent.innerHTML = `
+        <div class="section">
+          <h3>你的恋爱特征</h3>
+          <ul>
+            ${result.details.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+
+        <div class="section">
+          <h3>人格组合</h3>
+          <ul>
+            <li>主人格：${personalityTypes[topTrait]}</li>
+            <li>辅人格：${personalityTypes[secondTrait]}</li>
+            <li>你的恋爱偏好更接近：${personalityTypes[topTrait]} + ${personalityTypes[secondTrait]}</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h3>适合你的伴侣类型</h3>
+          <ul>
+            <li>能理解你内心节奏的人</li>
+            <li>愿意认真沟通且稳定相处的人</li>
+            <li>会尊重你的边界与感受的人</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h3>恋爱中要注意</h3>
+          <ul>
+            <li>不要因为强烈的情绪而忽略现实基础</li>
+            <li>学会在亲密与独立之间保持平衡</li>
+            <li>真正重要的不是“被追得很紧”，而是被理解和被尊重</li>
+          </ul>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
