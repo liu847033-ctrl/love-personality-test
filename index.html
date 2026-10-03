@@ -132,11 +132,11 @@
       font-weight: 700;
     }
 
-    .start-btn, .secondary-btn, .unlock-btn {
-      width: 100%;
-      height: 60px;
+    .start-btn, .secondary-btn, .unlock-btn, .nav-btn {
       border: none;
       cursor: pointer;
+      width: 100%;
+      height: 60px;
       border-radius: 18px;
       color: white;
       font-size: 18px;
@@ -161,7 +161,24 @@
       box-shadow: 0 16px 28px rgba(17, 24, 39, 0.2);
     }
 
-    .start-btn:hover, .secondary-btn:hover, .unlock-btn:hover {
+    .nav-btn {
+      width: 160px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f4f1ff 0%, #ece7ff 100%);
+      color: var(--purple-deep);
+      font-size: 16px;
+      box-shadow: none;
+      border: 1px solid rgba(124, 92, 255, 0.1);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .start-btn:hover, .secondary-btn:hover, .unlock-btn:hover, .nav-btn:hover:not(:disabled) {
       transform: translateY(-2px);
     }
 
@@ -240,6 +257,12 @@
       font-size: 16px;
       line-height: 1.7;
       color: var(--text);
+    }
+
+    .nav-row {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: 18px;
     }
 
     .result-header {
@@ -529,6 +552,7 @@
     ];
 
     const scores = { R: 0, E: 0, L: 0, A: 0, G: 0, F: 0 };
+    const userAnswers = [];
     let currentIndex = 0;
 
     const welcomePage = document.getElementById('welcomePage');
@@ -543,15 +567,31 @@
     const resultTags = document.getElementById('resultTags');
     const resultContent = document.getElementById('resultContent');
 
+    function resetScores() {
+      Object.keys(scores).forEach((key) => scores[key] = 0);
+    }
+
+    function applyAnswerWeight(questionIndex, selectedKey, direction) {
+      const target = questions[questionIndex].options[selectedKey];
+      if (!target) return;
+      Object.entries(target.weight).forEach(([type, value]) => {
+        scores[type] += direction * value;
+      });
+    }
+
     document.getElementById('startBtn').addEventListener('click', () => {
       welcomePage.classList.add('hidden');
       quizPage.classList.remove('hidden');
+      resetScores();
+      userAnswers.length = 0;
+      currentIndex = 0;
       renderQuestion();
     });
 
     document.getElementById('replayBtn').addEventListener('click', () => {
       currentIndex = 0;
-      Object.keys(scores).forEach((k) => scores[k] = 0);
+      resetScores();
+      userAnswers.length = 0;
       resultPage.classList.add('hidden');
       quizPage.classList.remove('hidden');
       renderQuestion();
@@ -584,15 +624,34 @@
             <span class="option-text">${q.options[key].text}</span>
           </div>
         `).join('')}
+        <div class="nav-row">
+          <button class="nav-btn" id="prevBtn" ${currentIndex === 0 ? 'disabled' : ''}>上一题</button>
+        </div>
       `;
+
+      const prevBtn = document.getElementById('prevBtn');
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          if (currentIndex > 0) {
+            currentIndex -= 1;
+            renderQuestion();
+          }
+        });
+      }
 
       questionContainer.querySelectorAll('.option').forEach((btn) => {
         btn.addEventListener('click', () => {
           const selectedKey = btn.dataset.key;
-          const selected = q.options[selectedKey];
-          Object.entries(selected.weight).forEach(([type, value]) => {
-            scores[type] += value;
-          });
+          const previousKey = userAnswers[currentIndex];
+
+          if (previousKey && previousKey !== selectedKey) {
+            applyAnswerWeight(currentIndex, previousKey, -1);
+          }
+
+          if (previousKey !== selectedKey) {
+            userAnswers[currentIndex] = selectedKey;
+            applyAnswerWeight(currentIndex, selectedKey, 1);
+          }
 
           currentIndex++;
 
