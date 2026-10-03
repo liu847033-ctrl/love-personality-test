@@ -8,77 +8,78 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
-      --bg1: #fff7fb;
-      --bg2: #f5f7ff;
+      --bg1: #fffafc;
+      --bg2: #f4f6ff;
       --pink: #ff6b9d;
+      --pink-2: #ff7ca8;
       --purple: #7c5cff;
-      --purple-deep: #5745d1;
-      --text: #1f2133;
-      --muted: #6d7288;
-      --line: #eeeaf8;
-      --card: rgba(255,255,255,0.82);
-      --shadow: 0 18px 45px rgba(94, 79, 168, 0.12);
+      --purple-deep: #5543d1;
+      --indigo: #3645c5;
+      --text: #1d2233;
+      --muted: #6b7285;
+      --line: rgba(124, 92, 255, 0.12);
+      --card: rgba(255, 255, 255, 0.7);
+      --shadow: 0 20px 50px rgba(97, 80, 170, 0.12);
+      --warning: #fff0c7;
+      --warning-border: rgba(255, 185, 62, 0.15);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
     body {
       font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
       background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
       color: var(--text);
       min-height: 100vh;
-      position: relative;
       overflow-x: hidden;
+      position: relative;
     }
 
     body::before, body::after {
       content: "";
       position: fixed;
-      width: 320px;
-      height: 320px;
+      width: 360px;
+      height: 360px;
       border-radius: 50%;
-      filter: blur(50px);
-      opacity: 0.35;
-      z-index: 0;
+      filter: blur(60px);
+      opacity: 0.33;
       pointer-events: none;
+      z-index: 0;
     }
-
     body::before {
-      background: rgba(255, 107, 157, 0.18);
+      background: rgba(255, 107, 157, 0.24);
       top: -80px;
-      left: -60px;
+      left: -50px;
     }
-
     body::after {
       background: rgba(124, 92, 255, 0.18);
-      right: -70px;
-      bottom: 10%;
+      right: -80px;
+      bottom: 5%;
     }
 
     .container {
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 24px 18px 48px;
       position: relative;
       z-index: 1;
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 26px 20px 52px;
     }
 
     .hero {
+      padding-top: 22px;
       text-align: center;
-      padding: 40px 0 10px;
     }
 
     .logo-wrap {
       display: inline-flex;
+      width: 106px;
+      height: 106px;
+      border-radius: 30px;
       align-items: center;
       justify-content: center;
-      width: 96px;
-      height: 96px;
-      border-radius: 28px;
-      background: linear-gradient(135deg, #ff6b9d 0%, #8f6efb 100%);
-      box-shadow: 0 16px 34px rgba(157, 118, 255, 0.28);
-      animation: float 3s ease-in-out infinite;
+      background: linear-gradient(135deg, var(--pink) 0%, var(--purple) 100%);
+      box-shadow: 0 18px 40px rgba(124, 92, 255, 0.22);
+      animation: float 3.2s ease-in-out infinite;
     }
 
     @keyframes float {
@@ -87,59 +88,59 @@
     }
 
     .logo {
-      font-size: 42px;
+      font-size: 48px;
+      font-weight: 900;
       color: white;
-      font-weight: 800;
       line-height: 1;
     }
 
     .hero h1 {
       margin-top: 22px;
-      font-size: clamp(30px, 4vw, 50px);
-      line-height: 1.2;
+      font-size: clamp(30px, 5vw, 52px);
+      line-height: 1.1;
       letter-spacing: -0.04em;
       font-weight: 900;
-      background: linear-gradient(90deg, #ff4d87 0%, #7a5ef7 50%, #4a8eff 100%);
+      background: linear-gradient(90deg, #ff4b83 0%, #7c5cff 50%, #4a8eff 100%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
 
     .hero p {
-      max-width: 640px;
-      margin: 16px auto 0;
-      color: var(--muted);
+      max-width: 660px;
+      margin: 18px auto 0;
       font-size: 18px;
       line-height: 1.8;
+      color: var(--muted);
     }
 
     .pill-row {
+      margin-top: 24px;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 24px;
     }
 
     .pill {
-      border: 1px solid rgba(124, 92, 255, 0.12);
-      background: rgba(255,255,255,0.6);
-      color: var(--purple-deep);
-      border-radius: 999px;
       padding: 9px 14px;
-      font-weight: 600;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(124,92,255,0.08);
+      color: var(--purple-deep);
       font-size: 13px;
+      font-weight: 700;
     }
 
-    .start-btn, .unlock-btn, .secondary-btn {
-      border: none;
-      cursor: pointer;
+    .start-btn, .secondary-btn, .unlock-btn {
       width: 100%;
       height: 60px;
+      border: none;
+      cursor: pointer;
       border-radius: 18px;
       color: white;
       font-size: 18px;
-      font-weight: 700;
+      font-weight: 800;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
@@ -150,47 +151,47 @@
     }
 
     .secondary-btn {
-      background: linear-gradient(135deg, #ff9ab0 0%, #8a6dff 100%);
-      box-shadow: 0 16px 25px rgba(124, 92, 255, 0.16);
+      background: linear-gradient(135deg, #ff9bb0 0%, #8a6dff 100%);
+      box-shadow: 0 16px 28px rgba(124, 92, 255, 0.16);
     }
 
     .unlock-btn {
       margin-top: 20px;
       background: #111827;
-      box-shadow: 0 18px 26px rgba(17, 24, 39, 0.22);
+      box-shadow: 0 16px 28px rgba(17, 24, 39, 0.2);
     }
 
-    .start-btn:hover, .unlock-btn:hover, .secondary-btn:hover {
+    .start-btn:hover, .secondary-btn:hover, .unlock-btn:hover {
       transform: translateY(-2px);
     }
 
     .card {
       background: var(--card);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
+      border-radius: 30px;
       border: 1px solid rgba(124, 92, 255, 0.08);
-      border-radius: 28px;
       box-shadow: var(--shadow);
       padding: 26px 24px;
-      margin-top: 20px;
+      margin-top: 22px;
     }
 
-    .progress-wrap { margin-bottom: 18px; }
+    .progress-wrap { margin-bottom: 16px; }
 
     .progress-top {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      justify-content: space-between;
+      margin-bottom: 12px;
       color: var(--muted);
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .progress {
       width: 100%;
       height: 12px;
       border-radius: 999px;
-      background: #f0eef8;
+      background: #f0edf7;
       overflow: hidden;
       border: 1px solid rgba(124, 92, 255, 0.05);
     }
@@ -207,13 +208,12 @@
       font-size: clamp(22px, 3vw, 30px);
       font-weight: 800;
       line-height: 1.5;
+      letter-spacing: -0.03em;
       margin-bottom: 18px;
-      letter-spacing: -0.02em;
     }
 
     .option {
-      display: block;
-      background: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.72);
       border: 2px solid var(--line);
       border-radius: 20px;
       padding: 18px 18px;
@@ -224,36 +224,34 @@
 
     .option:hover {
       transform: translateY(-2px);
-      border-color: rgba(124, 92, 255, 0.4);
-      box-shadow: 0 12px 24px rgba(124, 92, 255, 0.08);
+      border-color: rgba(124, 92, 255, 0.38);
+      box-shadow: 0 12px 22px rgba(124, 92, 255, 0.08);
     }
 
     .option-label {
       display: inline-block;
-      width: 30px;
       color: var(--purple);
       font-weight: 900;
       margin-right: 8px;
+      min-width: 26px;
     }
 
     .option-text {
-      display: inline;
+      font-size: 16px;
       line-height: 1.7;
       color: var(--text);
-      font-size: 16px;
     }
 
     .result-header {
       text-align: center;
-      padding-top: 6px;
     }
 
     .result-type {
       font-size: clamp(30px, 4vw, 46px);
       font-weight: 900;
+      line-height: 1.15;
       letter-spacing: -0.04em;
-      line-height: 1.2;
-      background: linear-gradient(90deg, #ff5c94 0%, #7c5cff 100%);
+      background: linear-gradient(90deg, #ff5d96 0%, #7d5df9 100%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -261,73 +259,74 @@
 
     .result-sub {
       margin-top: 12px;
+      font-size: 16px;
       color: var(--muted);
       line-height: 1.9;
-      font-size: 16px;
     }
 
     .tags {
-      margin-top: 20px;
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
       gap: 10px;
+      justify-content: center;
+      margin-top: 18px;
     }
 
     .tag {
-      padding: 9px 14px;
-      background: #f3f1ff;
-      color: var(--purple);
+      padding: 8px 14px;
       border-radius: 999px;
+      background: #f3f1ff;
+      border: 1px solid rgba(124, 92, 255, 0.08);
+      color: var(--purple);
       font-size: 13px;
       font-weight: 700;
-      border: 1px solid rgba(124, 92, 255, 0.08);
     }
 
     .chart-wrap {
-      margin-top: 26px;
-      background: rgba(247, 246, 255, 0.7);
-      border-radius: 22px;
+      margin-top: 28px;
       padding: 12px;
+      border-radius: 22px;
+      background: rgba(247,246,255,0.74);
       border: 1px solid rgba(124, 92, 255, 0.08);
     }
 
     .section {
-      margin-top: 28px;
+      margin-top: 30px;
     }
 
     .section h3 {
       font-size: 23px;
-      margin-bottom: 12px;
       font-weight: 800;
       letter-spacing: -0.03em;
+      margin-bottom: 12px;
     }
 
     .section ul {
-      padding-left: 20px;
+      padding-left: 18px;
     }
 
     .section li {
-      color: #35395d;
-      line-height: 1.9;
       margin-bottom: 8px;
+      line-height: 1.9;
+      color: #363d55;
     }
 
     .premium {
       margin-top: 34px;
-      background: linear-gradient(135deg, #fff6d9 0%, #ffe4ab 100%);
-      border-radius: 22px;
       padding: 24px 20px;
-      border: 1px solid rgba(255, 173, 34, 0.2);
+      border-radius: 22px;
+      background: linear-gradient(135deg, #fff6d6 0%, #ffe3a0 100%);
+      border: 1px solid var(--warning-border);
     }
 
     .premium h2 {
       font-size: 24px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
+      font-weight: 800;
     }
 
     .premium ul {
-      padding-left: 18px;
+      padding-left: 20px;
     }
 
     .premium li {
@@ -344,7 +343,7 @@
     .result-actions .secondary-btn,
     .result-actions .unlock-btn {
       width: 50%;
-      height: 52px;
+      height: 56px;
       font-size: 16px;
     }
 
@@ -363,15 +362,13 @@
   <div class="container">
     <div id="welcomePage">
       <div class="hero">
-        <div class="logo-wrap">
-          <div class="logo">❤</div>
-        </div>
+        <div class="logo-wrap"><div class="logo">❤</div></div>
         <h1>发现你的恋爱人格</h1>
-        <p>通过30道深度问题，分析你的恋爱模式、依恋倾向与情感需求，看看你在爱情里更偏向哪一种类型。</p>
+        <p>通过30道深度问题，分析你的恋爱模式、依恋倾向与情感需求，看看你在爱情里偏向哪一种人。</p>
         <div class="pill-row">
           <span class="pill">恋爱原型</span>
           <span class="pill">依恋模式</span>
-          <span class="pill">伴侣偏好</span>
+          <span class="pill">择偶偏好</span>
           <span class="pill">情感需求</span>
         </div>
         <button class="start-btn" id="startBtn">开始测试</button>
@@ -418,7 +415,7 @@
           </ul>
           <div class="result-actions">
             <button class="secondary-btn" id="replayBtn">重新测试</button>
-            <button class="unlock-btn" id="shareBtn">复制结果</button>
+            <button class="unlock-btn" id="copyBtn">复制结果</button>
           </div>
         </div>
       </div>
@@ -438,62 +435,62 @@
     const personalityDescriptions = {
       R: {
         title: '浪漫型恋爱人格',
-        desc: '你在恋爱里更看重情绪共鸣和浪漫体验，容易被爱意、细节和心动感打动。你不是只想“在一起”，而是想真切地感受到被珍惜。',
+        desc: '你重视情绪的强烈连接和浪漫的体验。你更容易被真诚表达、细节关怀和心动感打动，期待爱情带来温度和情绪共振。',
         tags: ['情绪敏感', '浪漫表达', '深情投入'],
         details: [
-          '你容易被热烈的表达、强烈的陪伴和浪漫细节打动。',
-          '你重视“心动感”和情绪连接，不喜欢淡而无味的相处。',
-          '你更需要伴侣能够真诚表达爱意，并且愿意用行动回应你。'
+          '你容易被热烈表达、细致关怀和浪漫氛围打动。',
+          '你重视“心动感”和情绪连接，不喜欢关系过于平淡。',
+          '你需要伴侣真诚表达爱意，并且愿意用行动回应你。'
         ]
       },
       E: {
         title: '探险型恋爱人格',
-        desc: '你更喜欢新鲜感、变化和成长，恋爱不是一成不变的“稳定”，而是不断发现彼此新鲜的过程。你会被有趣的人、有冲劲的人吸引。',
+        desc: '你在恋爱中追求新鲜感、变化和共同成长。你不喜欢单调平庸，更希望和伴侣一起发现新鲜故事和新的人生体验。',
         tags: ['新鲜感', '冒险精神', '共同成长'],
         details: [
-          '你不喜欢太平淡的关系，容易对新鲜刺激和创造力更有兴趣。',
-          '你在乎双方是否能一起成长、一起尝试新事物。',
-          '你适合和有活力、有想法的人相处，能一起体验人生。'
+          '你不喜欢太平淡的关系，容易被有想法、有行动力的人吸引。',
+          '你更关注关系是否有趣、有刺激、有成长空间。',
+          '你适合和愿意尝试新事物、愿意一起变化的人相处。'
         ]
       },
       L: {
         title: '逻辑型恋爱人格',
-        desc: '你更重视稳定基础、现实条件和长期可能性。你不是不敢爱，而是更愿意在感情里保持理性，直到确认兼容性和未来都成立。',
-        tags: ['理性判断', '稳定基础', '长期规划'],
+        desc: '你更重视稳定基础、现实条件和长期可能性。你不是不敢爱，而是更愿意用理性看待感情，确保这段关系值得投入。',
+        tags: ['理性判断', '长期规划', '稳定关系'],
         details: [
-          '你会先看这段关系是否有现实基础和长期兼容性。',
-          '你更容易在感情中保持观察和判断，不容易被冲动带走。',
-          '你需要的是成熟、稳妥、可信的相处方式。'
+          '你会先看现实基础和双方是否适配，再决定是否投入。',
+          '你更重视长期兼容和稳定相处，而不是一时冲动。',
+          '你适合成熟、稳定、愿意经营关系的人。'
         ]
       },
       A: {
         title: '执着型恋爱人格',
-        desc: '你在感情里更容易认真投入，也更容易对关系有强烈期待。你会重视确认、回应和深度连接，心理上对不确定感更敏感。',
+        desc: '你在感情里会认真投入，并且对关系的确认、回应和深度连接格外在意。你渴望被认真对待，也更容易对不确定感敏感。',
         tags: ['深度投入', '安全敏感', '情感渴望'],
         details: [
-          '你在乎的是彼此是否真的在意、是否稳定回应。',
-          '你容易把爱看得很深，也会因此对不确定更敏感。',
-          '你需要伴侣给你持续的安心和明确的情绪表达。'
+          '你容易在意对方是否持续关心你、是否认真对待你。',
+          '你对关系的投入度很深，也因此更容易受到情绪波动影响。',
+          '你需要清晰的回应和稳定的情感确认。'
         ]
       },
       G: {
         title: '关怀型恋爱人格',
-        desc: '你很擅长理解和陪伴，恋爱里更看重稳定支持、温柔和心理上的归属感。你想要的不是轰轰烈烈，而是舒服和被照顾。',
+        desc: '你重视陪伴、理解和温暖。你的恋爱方式偏向照顾、支持与稳定，你更希望关系里有归属感和安心感。',
         tags: ['同理心', '温暖陪伴', '稳定关怀'],
         details: [
-          '你容易关注对方的感受，也希望对方也愿意照顾你。',
-          '你在乎的是稳定、温暖和长期相处的质量。',
-          '你适合和成熟、可靠、懂得照顾人的人相处。'
+          '你善于理解和照顾伴侣，也希望对方能同样理解你。',
+          '你在乎关系中的安全感和稳定感，而不是只有激情。',
+          '你适合成熟、温暖、愿意长期经营的人。'
         ]
       },
       F: {
         title: '自由型恋爱人格',
-        desc: '你珍惜自己的空间和边界，也希望在关系里保持舒适与尊重。你不是不爱，而是更看重爱中不失去自我。',
+        desc: '你珍惜个人空间、边界和尊重。你不是不爱，而是希望在关系中保留自己的独立性，并让爱建立在平等与自由之上。',
         tags: ['独立自主', '边界感', '轻松相处'],
         details: [
-          '你重视个人空间，不喜欢压迫式的关系。',
-          '你更容易和懂得尊重、不会强求的人相处。',
-          '你希望爱里有舒适感、尊重感和自由度。'
+          '你重视个人空间，不喜欢被控制或过度干涉。',
+          '你更容易和懂得尊重、愿意平等相处的人相处。',
+          '你希望关系里有自由感、舒适感和尊重感。'
         ]
       }
     };
@@ -560,15 +557,15 @@
       renderQuestion();
     });
 
-    document.getElementById('shareBtn').addEventListener('click', async () => {
-      const finalTrait = getTopTrait();
-      const result = personalityDescriptions[finalTrait];
-      const text = `我在“恋爱人格测试”里测出：${result.title}。快来测测你是什么恋爱人格？${window.location.href}`;
+    document.getElementById('copyBtn').addEventListener('click', async () => {
+      const topTrait = getTopTrait();
+      const result = personalityDescriptions[topTrait];
+      const shareText = `我在“恋爱人格测试”里测出：${result.title}。快来看看你是什么恋爱原型吧！${window.location.href}`;
       try {
-        await navigator.clipboard.writeText(text);
+        await navigator.clipboard.writeText(shareText);
         alert('结果已复制到剪贴板');
       } catch (err) {
-        alert('复制失败：' + err.message);
+        alert('复制失败，请手动复制：' + shareText);
       }
     });
 
@@ -678,7 +675,7 @@
         </div>
 
         <div class="section">
-          <h3>最适合的伴侣类型</h3>
+          <h3>适合的伴侣类型</h3>
           <ul>
             <li>能理解你内心节奏的人</li>
             <li>愿意认真沟通且稳定相处的人</li>
@@ -689,8 +686,8 @@
         <div class="section">
           <h3>恋爱中需要注意</h3>
           <ul>
-            <li>不要因为强烈情绪而忽略现实基础</li>
-            <li>学会在亲密和独立中保持平衡</li>
+            <li>不要让强烈情绪掩盖现实基础</li>
+            <li>学会在亲密和独立之间保持平衡</li>
             <li>真正重要的不是“被追得很紧”，而是被理解和被尊重</li>
           </ul>
         </div>
